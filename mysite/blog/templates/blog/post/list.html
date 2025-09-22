@@ -1,4 +1,5 @@
 {% extends 'blog/base.html' %}
+{% load blog_tags %}
 {% block title %}Мой блог{% endblock %}
 {% block content %}
 
@@ -11,7 +12,7 @@
         <h2>{{ post.title }}</h2>
     </a>
 
-    {{ post.body|truncatewords:50|linebreaks }}
+    {{ post.body|markdown|truncatewords_html:30 }}
 
     <ul class="list-unstyle list-inline">
         {% for post_tag in post.tags.all %}
