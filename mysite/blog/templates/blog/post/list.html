@@ -1,0 +1,35 @@
+{% extends 'blog/base.html' %}
+{% block title %}Мой блог{% endblock %}
+{% block content %}
+
+{% if tag %}
+    <h1 class="mb-5">Статьи с тегом "{{ tag.name }}"</h2>
+{% endif %}
+
+{% for post in posts %}
+    <a href="{{ post.get_absolute_url }}">
+        <h2>{{ post.title }}</h2>
+    </a>
+
+    {{ post.body|truncatewords:50|linebreaks }}
+
+    <ul class="list-unstyle list-inline">
+        {% for post_tag in post.tags.all %}
+            <li class="list-inline-item">
+                <a href="{% url 'blog:post_list_by_tag' post_tag.slug %}">
+                    <span class="badge bg-light-subtle border border-light-subtle text-light-emphasis rounded-pill mr-2">
+                        <strong>#{{ post_tag }}</strong>
+                    </span>
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <p class="blog-post-meta">Опубликовано {{ post.author }} от {{ post.publish }}</p>
+{% empty %}
+    <h2>Нет постов</h2>
+{% endfor %}
+
+{% include "blog/post/pagination.html" with page=posts %}
+
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'blog/base.html' %}
+{% load i18n %}
+{% block title %}{{ post.title }}{% endblock %}
+{% block content %}
+    <p><a href="{% url 'blog:post_list' %}">Назад</a></p>
+    
+    <h2>{{ post.title }}</h2>
+    
+    {{ post.body|linebreaks }}
+
+    <p>
+        <i>Опубликовано {{ post.author }} от {{ post.publish }}</i>
+    </p>
+
+    <p>
+        <a href="{% url 'blog:post_share' post.id %}">
+            <i class="bi bi-envelope"></i> Поделиться
+        </a>
+    </p>
+
+    {% include "blog/post/includes/comment_form.html" %}
+
+    <section class="similar-posts mt-5">
+        <h3>Похожие статьи</h3>
+        {% for post in similar_posts %}
+            <p>
+                <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+            </p>
+        {% empty %}
+            <p>Здесь пока нет похожих статей.</p>
+        {% endfor %}
+    </section>
+
+    <section class="comments mt-5">
+        <h3>Комментарии ({{ comments.count }})</h3>
+        {% for comment in comments %}
+            <div class="comment">
+                <p class="info">
+                    Комментарий {{ forloop.counter }} от {{ comment.name }}
+                    {{ comment.created }}
+                </p>
+                <cite>{{ comment.body|linebreaks }}</cite>
+            </div>
+        {% empty %}
+            <p>Здесь пока нет комментариев.</p>
+        {% endfor %}
+    </section>
+    
+{% endblock %}
