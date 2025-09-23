@@ -48,3 +48,14 @@ class EmailPostForm(forms.Form):
             }
         )
     )
+
+
+class SearchForm(forms.Form):
+    query = forms.CharField(
+            label='', 
+            widget=forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Введите что-нибудь'
+            }
+        )
+    )
